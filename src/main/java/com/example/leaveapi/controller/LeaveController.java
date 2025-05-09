@@ -16,31 +16,31 @@ public class LeaveController {
     @Autowired
     private LeaveService leaveService;
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAuthority('USER')")
     @PostMapping
     public ResponseEntity<?> requestLeave(@RequestBody LeaveRequest request) {
         return ResponseEntity.ok(leaveService.createLeave(request));
     }
 
-    @PreAuthorize("hasRole('USER')")
-    @GetMapping
+    @PreAuthorize("hasAuthority('USER')")
+    @GetMapping("/all")
     public ResponseEntity<?> getMyLeaves() {
         return ResponseEntity.ok(leaveService.getLeavesForCurrentUser());
     }
 
-    @PreAuthorize("hasRole('MANAGER')")
+    @PreAuthorize("hasAuthority('MANAGER')")
     @GetMapping("/pending")
     public ResponseEntity<?> getPendingLeaves() {
         return ResponseEntity.ok(leaveService.getPendingLeaves());
     }
 
-    @PreAuthorize("hasRole('MANAGER')")
+    @PreAuthorize("hasAuthority('MANAGER')")
     @PutMapping("/{id}/approve")
     public ResponseEntity<?> approve(@PathVariable Long id) {
         return ResponseEntity.ok(leaveService.approveLeave(id));
     }
 
-    @PreAuthorize("hasRole('MANAGER')")
+    @PreAuthorize("hasAuthority('MANAGER')")
     @PutMapping("/{id}/reject")
     public ResponseEntity<?> reject(@PathVariable Long id) {
         return ResponseEntity.ok(leaveService.rejectLeave(id));
