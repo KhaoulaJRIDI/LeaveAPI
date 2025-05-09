@@ -30,8 +30,8 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         user = userService.create(user);
-
-        return new AuthResponseDTO(jwtService.generateToken(user.getEmail()));
+//-ici où on doit definir les paramètres d'authentification -dans ce cas j'ai choisi username
+        return new AuthResponseDTO(jwtService.generateToken(user.getUsername()));
     }
 
     public AuthResponseDTO authenticate(AuthRequestDTO dto) {

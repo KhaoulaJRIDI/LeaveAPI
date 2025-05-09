@@ -14,25 +14,30 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
-
-    @Value("aLongSecretStringWhoseBitnessIsEqualToOrGreaterThan...")
+    @Value("${jwt.secret.key}")
     private String secretKey;
 
-    @Value("86400000")
+    @Value("${jwt.expiration}")
     private Long expiration;
+
+    private final long EXPIRATION_TIME = 86400000; // 1 day in milliseconds
 
     private SecretKey getKey() {
         return Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
-    public String generateToken(String username) {
-        return Jwts.builder()
-                .setIssuer(username)
+   public String generateToken(String username) {
+       Date expiryDate = new Date(System.currentTimeMillis() + 86400000L);
+       System.out.println("New token expiration: " + expiryDate);
 
+        String token= Jwts.builder()
+                .setIssuer(username)
                 .setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getKey(), SignatureAlgorithm.HS512)
                 .compact();
+       System.out.println("Generated token: " + token);
+       return token;
     }
 
     public Claims getClaims(String token) {
@@ -48,4 +53,6 @@ public class JwtService {
 
         return authentication.getName();
     }
-}
+
+
+   }

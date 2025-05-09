@@ -42,10 +42,6 @@ public class User  implements Serializable, UserDetails {
     @CollectionTable(name = "user_role")
     private Set<Integer> roles = new HashSet<>(Arrays.asList(Role.USER.getId()));
 
-
-    private Role role;
-
-
     public User(String username, String email, String password) {
         super();
         this.username = username;
